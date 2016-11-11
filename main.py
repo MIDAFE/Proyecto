@@ -4,13 +4,14 @@ import json
 import telebot
 from telebot import types
 import time
-import unicodedate
+import signal
+import sys
+import atexit
 
-from apscheduler.scheduler import Scheduler
-from collections import OrderedDict
+import pyupm_grove as grove
+import pyupm_grovespeaker as upmGrovespeaker
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, 
-Filters
+from telegram.ext import Updater, CommandHandler, MessageHandler,Filters
 
 credentials = ConfigParser.ConfigParser()
 credentialsfile = "credentials.config"
@@ -42,7 +43,8 @@ if __name__ == '__main__':
     credential = credentials.get("telegram", "token")
     updater = Updater(credential)
     dp = updater.dispatcher
-
-    dp.add_handler(CommandHandler("Go", functionTranslate))
-
+    dp.add_handler(CommandHandler("go", functionTranslate))
+    dp.add_handler(CommandHandler("stop", command_announcement))
+message="mike"
 updater.start_polling()
+updater.idle()
