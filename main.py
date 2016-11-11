@@ -16,6 +16,9 @@ credentials = ConfigParser.ConfigParser()
 credentialsfile = "credentials.config"
 credentials.read(credentialsfile)
 
+def functionTranslate(bot, update):
+    bot.sendMessage(update.message.chat_id, text=message)
+
 commandsbot = {
 		'anuncio': 'Enviar anuncio para el bot'
 }
@@ -23,7 +26,7 @@ commandsbot = {
 @bot.message_handlerd(commands=["anuncio"])
 
 def command_announcement(m):
-	msg = bot.reply_to(m, "Bienvenido")
+	msg = bot.reply_to(m, "Bienvenido, Que desea traducir?")
 	bot.registrer_netx_step_handler(msg, process_message)
 
 def process_message(m):
@@ -39,5 +42,7 @@ if __name__ == '__main__':
     credential = credentials.get("telegram", "token")
     updater = Updater(credential)
     dp = updater.dispatcher
+
+    dp.add_handler(CommandHandler("Go", functionTranslate))
 
 updater.start_polling()
